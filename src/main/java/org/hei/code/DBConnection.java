@@ -5,11 +5,27 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String URL = "jdbc:postgresql://localhost:5432/mini_football_db";
-    private static final String USER = "mini_football_db_manager";
-    private static final String PASSWORD = "123456";
 
-    public Connection getDBConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    private final Connection connection;
+
+    public DBConnection() throws SQLException {
+        String url = System.getenv("DB_URL");
+        String user = System.getenv("DB_USER");
+        String password = System.getenv("DB_PASSWORD");
+
+            if (url == null || user == null || password == null) {
+                throw new IllegalStateException("Variable non definie");
+            }
+            this.connection = DriverManager.getConnection(url, user, password);
+        }
+
+        public Connection getDBConnection(){
+            return connection;
+        }
+
+        public void close() throws SQLException {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        }
     }
-}
