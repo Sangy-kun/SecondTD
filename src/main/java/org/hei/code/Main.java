@@ -11,7 +11,7 @@ public class Main {
         DataRetriever retriever = new DataRetriever(dbConnection);
 
         try {
-            Team team = retriever.findTeamById(1);
+            Team team = retriever.findTeamById(4);
             if(team == null) {
                 System.out.println("Team not found");
             } else {
